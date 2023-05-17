@@ -109,17 +109,35 @@ header {
 <body>
     <header>Protein Structure Database</header>
     <div class="container">
-        <label class="box-label">Collection 1</label>
+        <label class="box-label">Structure</label>
         <div class="scroll-box">
-            <p>Content for box 1<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec lorem id ante feugiat elementum.</p>
+            {% for document in data1 %}
+            <div class="document">
+                {% for key, value in document.items() %}
+                    <p><strong>{{ key }}:</strong> {{ value }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
         </div>
-        <label class="box-label">Collection 2</label>
+        <label class="box-label">Chain</label>
         <div class="scroll-box">
-            <p>Content for box 2<br>Nullam consectetur nisl eu urna convallis, sed venenatis nisl scelerisque. Integer a tristique lectus.</p>
+            {% for document in data2 %}
+            <div class="document">
+                {% for key, value in document.items() %}
+                    <p><strong>{{ key }}:</strong> {{ value }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
         </div>
-        <label class="box-label">Collection 3</label>
+        <label class="box-label">Experimintal</label>
         <div class="scroll-box">
-            <p>Content for box 3<br>Praesent rhoncus sem eget metus euismod gravida. Vestibulum consectetur, justo id maximus tristique, eros urna commodo.</p>
+            {% for document in data3 %}
+            <div class="document">
+                {% for key, value in document.items() %}
+                    <p><strong>{{ key }}:</strong> {{ value }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
         </div>
     </div>
    
