@@ -1,7 +1,8 @@
 import pandas as pd
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,redirect,url_for
+import json
 # # shrink csv files to 5000 records:
 # dups_df = pd.read_csv('data//dups.csv').head(5000)
 # seq_df = pd.read_csv('data//seq.csv').head(12000)
@@ -66,15 +67,6 @@ experimental_col = db['Experimental']
 #     experimental_col.insert_one(document)
 
 
-# # Delete documents from Experimental collection where crystallizationMethod is empty
-# db.Experimental.delete_many({"crystallizationMethod": {"$eq": ""}})
-# # Get a list of structureIds that were deleted from the Experimental collection
-# deleted_structureIds = [doc["structureId"] for doc in db.Experimental.find({"crystallizationMethod": {"$eq": ""}}, {"structureId": 1})]
-# # Delete corresponding documents from Structure and Chain collections
-# db.Structure.delete_many({"structureId": {"$in": deleted_structureIds}})
-# db.Chain.delete_many({"structureId": {"$in": deleted_structureIds}})
-
-
 # # Update the Structure collection with chainId
 # updated_count = db.Structure.update_many({}, {"$set": {"chainId": []}}).modified_count
 # print(f"Updated {updated_count} documents in Structure collection with empty chainId")
@@ -106,7 +98,89 @@ def get_data():
     data2 = [document for document in cursor2]
     cursor3 = experimental_col.find()
     data3 = [document for document in cursor3]
-    return render_template('index2.html', data1=data1, data2=data2, data3=data3)
+    return render_template('home.html', data1=data1, data2=data2, data3=data3)
+
+
+@app.route('/result')
+def show_result():
+    result = request.args.get('result')
+    return render_template('result.html', result=result)
+
+@app.route('/data', methods=['GET', 'POST'])
+def get_data_route():
+    if request.method == 'POST':
+        # Get the submitted data from the form
+        collection = request.form.get('collection')
+        query_type = request.form.get('query_type')
+        query = request.form.get('query')
+        
+        # Convert the query string to a JSON object
+        query_object = json.loads(query)
+        
+        # Perform the query on the specified collection based on the query type
+        if collection == 'Structure':
+            if query_type == 'Find':
+                result = structure_col.find(query_object)
+            elif query_type == 'Insert':
+                structure_col.insert_one(query_object)
+                result = "Data inserted successfully"
+            elif query_type == 'Update':
+                # Update operation
+                update_data = json.loads(request.form['update_data'])
+                result = collection.update_many(query, {'$set': update_data})
+                result = f'Updated {result.modified_count} documents'
+            elif query_type == 'Delete':
+                # delete operation
+                result = collection.delete_many(query)
+                result = f'Deleted {result.deleted_count} documents'
+            else:
+                result = None
+
+
+        elif collection == 'Chain':
+            if query_type == 'Find':
+                result = chain_col.find(query_object)
+            elif query_type == 'Insert':
+                chain_col.insert_one(query_object)
+                result = "Data inserted successfully"
+            elif query_type == 'Update':
+                # Update operation
+                update_data = json.loads(request.form['update_data'])
+                result = collection.update_many(query, {'$set': update_data})
+                result = f'Updated {result.modified_count} documents'
+            elif query_type == 'Delete':
+                result = collection.delete_many(query)
+                result = f'Deleted {result.deleted_count} documents'
+            else:
+                result = None
+    
+
+        elif collection == 'Experimental':
+            if query_type == 'Find':
+                result = experimental_col.find(query_object)
+            elif query_type == 'Insert':
+                experimental_col.insert_one(query_object)
+                result = "Data inserted successfully"
+            elif query_type == 'Update':
+                # Update operation
+                update_data = json.loads(request.form['update_data'])
+                result = collection.update_many(query, {'$set': update_data})
+                result = f'Updated {result.modified_count} documents'
+            elif query_type == 'Delete':
+                # delete operation
+                result = collection.delete_many(query)
+                result = f'Deleted {result.deleted_count} documents'
+            else:
+                result = None
+    
+           
+        # Redirect to the result page after processing the form data
+        return redirect(url_for('show_result', result=result))
+    
+    return render_template('result.html')
+
+
+
 if __name__ == '__main__':
     app.run()
 
