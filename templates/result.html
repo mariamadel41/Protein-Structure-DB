@@ -6,25 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>result page</title>
     <style>
-        body{
-            background-color:#F4F1DE ;
+        body {
+            background-color: #F4F1DE;
         }
         
         .container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-}
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+        }
 
-img {
-  max-width: 50%;
-  height: 600px;
-  margin-left: 20px;
-  margin-top: 120px;
-margin-right: 120px;
-}
-header {
+        img {
+            max-width: 50%;
+            height: 600px;
+            margin-left: 20px;
+            margin-top: 120px;
+            margin-right: 120px;
+        }
+
+        header {
             text-align: center;
             position: absolute;
             top: 10%;
@@ -33,36 +34,37 @@ header {
             font-size: 45px;
             font-weight: bold;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            color:#3D405B;
+            color: #3D405B;
         }
+
         .scroll-box {
             position: absolute;
             top: 0;
             left: 0;
             width: 50%;
             height: 350px; /* Adjust the height of the output box */
-          
             padding: 10px; /* Add padding inside the output box */
             overflow: auto; /* Add scrollbars if the content exceeds the box dimensions */
             font-family: Arial, sans-serif; /* Specify the font family */
             font-size: 26px; /* Adjust the font size */
             margin-top: 200px;
             margin-left: 100px;
-            background-color:#F4F1DE ;
+            background-color: #F4F1DE;
             color: #b97001;
         }
+
         .label-container {
-            text-align:left;
-            color:#E07A5F;
+            text-align: left;
+            color: #E07A5F;
             position: absolute;
             top: 150px; /* Adjust the top position to your preference */
             left: 100px;
             right: 0;
             font-size: 30px;
             font-weight: bold;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
-            
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
+
         .rounded-button {
             background-color: #3D405B;
             color: #E07A5F;
@@ -76,24 +78,23 @@ header {
             left: 500px;
             font-size: 20px;
             font-weight: bold;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
-            
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
     </style>
 </head>
 <body>
     <header>Protein Structure Database</header>
     <div class="container">
-        <img src="res.png" alt="Your Image">
+        <img src="/home/mariam/Downloads/Protein/templates/result.png" alt="Your Image">
     </div>
     <div class="label-container">
         <label>Query Result:</label>
-    </div>
-    <div class="scroll-box">
-        {% for item in result %}
-        <p>{{ item }}</p>
-        {% endfor %}
-    </div>
+        <ul>
+            {% for document in data %}
+            <li>{{ document }}</li>
+            {% endfor %}
+        </ul>
+    </div>    
     <button class="rounded-button">Query</button>
 </body>
 </html>
