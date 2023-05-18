@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,jsonify
+from flask import Flask, render_template, request
 import json
 from pymongo import MongoClient
 
@@ -57,8 +57,6 @@ def process_query():
              data = [document for document in cursor]
         else:
             data = [{"EMPTY RESULT"}]
-
-        print("DATA==> ",   data)
         return render_template('result.html', query_type=query_type, query=query, data=data)
     except Exception as e:
         print(e)

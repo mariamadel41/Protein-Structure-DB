@@ -96,7 +96,7 @@
         </div>
         
     
-    {% comment %} <script>
+    <script>
         var data = {{ data|tojson }};
         var resultList = document.getElementsByClassName('label-container')[0];
         data.forEach(function(document) {
@@ -105,7 +105,7 @@
             resultList.appendChild(paragraph);
         });
 
-    </script>  {% endcomment %}
+    </script> 
 
 </body>
 </html>
