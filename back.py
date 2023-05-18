@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for,jsonify
 import json
 from pymongo import MongoClient
 
-
 app = Flask(__name__)
 
 # Create a new MongoClient and database
@@ -24,12 +23,12 @@ def get_data():
     data3 = [document for document in cursor3]
     return render_template('home.html', data1=data1, data2=data2, data3=data3)
 
-@app.route('/result', methods=['POST'])
+@app.route('/result', methods=['GET'])
 def process_query():
     try:
-        collection_name = request.form['collection']
-        query_type = request.form['query_type'].lower()
-        query_str = request.form['query']
+        collection_name = request.args.get('collection')
+        query_type = request.args.get('query_type').lower()
+        query_str = request.args.get('query')
         query = json.loads(query_str)
 
         if collection_name == 'Structure':
@@ -57,19 +56,15 @@ def process_query():
              cursor = collection.aggregate(query)
              data = [document for document in cursor]
         else:
-            data = []
+            data = [{"EMPTY RESULT"}]
 
+        print("DATA==> ",   data)
         return render_template('result.html', query_type=query_type, query=query, data=data)
     except Exception as e:
-        return render_template('error.html')
+        print(e)
+        return render_template('error.html', error_message=str(e))
 
 
-@app.route('/result')
-def show_result():
-    data = request.args.get('data')
-    print(data)  # Add this line to check the value of data
-    result_list = data.split(',') if data else []
-    return render_template('result.html', data=result_list)
 
 
 if __name__ == '__main__':

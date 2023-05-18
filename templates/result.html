@@ -96,18 +96,16 @@
         </div>
         
     
-    <script>
+    {% comment %} <script>
         var data = {{ data|tojson }};
+        var resultList = document.getElementsByClassName('label-container')[0];
+        data.forEach(function(document) {
+            var paragraph = document.createElement('p');
+            paragraph.textContent = document;
+            resultList.appendChild(paragraph);
+        });
 
-
-var resultList = document.getElementsByClassName('label-container')[0];
-data.forEach(function(document) {
-    var paragraph = document.createElement('p');
-    paragraph.textContent = document;
-    resultList.appendChild(paragraph);
-});
-
-</script> 
+    </script>  {% endcomment %}
 
 </body>
 </html>
