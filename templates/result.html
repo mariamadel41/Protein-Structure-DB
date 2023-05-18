@@ -84,7 +84,38 @@
 </head>
 <body>
     <header>Protein Structure Database</header>
-    <div class="container">
+    <div class="label-container">
+        <label>Query Result:</label>
+        {% for document in data %}
+        <p>{{ document }}</p>
+        {% endfor %}
+    </div>
+    <form action="/process_query" method="POST">
+        <div class="container">
+            <img src="{{ url_for('static', filename='result.png') }}" alt="Your Image">
+        </div>
+        
+        <!-- <div class="label-container">
+            <label>Query Result:</label>
+            {% for document in data %}
+            <p>{{ document }}</p>
+            {% endfor %}
+        </div>     -->
+        <!-- <button class="rounded-button" type="submit">Query</button> -->
+    </form>
+    <form action="/data" method="GET"> <!-- Update the action attribute to the desired URL -->
+        <!-- Form content -->
+        <button class="rounded-button" type="submit">Query</button>
+    </form>
+
+    <!-- <ul id="result-list">
+        {% for document in data %}
+        <li>{{ document }}</li>
+        {% endfor %}
+    </ul>
+     -->
+
+    <!-- <div class="container">
         <img src="/home/mariam/Downloads/Protein/templates/result.png" alt="Your Image">
     </div>
     <div class="label-container">
@@ -94,7 +125,20 @@
             <li>{{ document }}</li>
             {% endfor %}
         </ul>
-    </div>    
-    <button class="rounded-button">Query</button>
+    </div>     -->
+    <!-- <button class="rounded-button">Query</button> -->
+    <script>
+ var dataString = '{{ data|safe }}';
+var data = JSON.parse(dataString);
+
+var resultList = document.getElementsByClassName('label-container')[0];
+for (var i = 0; i < data.length; i++) {
+    var paragraph = document.createElement('p');
+    paragraph.textContent = data[i];
+    resultList.appendChild(paragraph);
+}
+
+    </script>
+    
 </body>
 </html>
