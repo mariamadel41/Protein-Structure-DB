@@ -95,50 +95,19 @@
             <img src="{{ url_for('static', filename='result.png') }}" alt="Your Image">
         </div>
         
-        <!-- <div class="label-container">
-            <label>Query Result:</label>
-            {% for document in data %}
-            <p>{{ document }}</p>
-            {% endfor %}
-        </div>     -->
-        <!-- <button class="rounded-button" type="submit">Query</button> -->
-    </form>
-    <form action="/data" method="GET"> <!-- Update the action attribute to the desired URL -->
-        <!-- Form content -->
-        <button class="rounded-button" type="submit">Query</button>
-    </form>
-
-    <!-- <ul id="result-list">
-        {% for document in data %}
-        <li>{{ document }}</li>
-        {% endfor %}
-    </ul>
-     -->
-
-    <!-- <div class="container">
-        <img src="/home/mariam/Downloads/Protein/templates/result.png" alt="Your Image">
-    </div>
-    <div class="label-container">
-        <label>Query Result:</label>
-        <ul>
-            {% for document in data %}
-            <li>{{ document }}</li>
-            {% endfor %}
-        </ul>
-    </div>     -->
-    <!-- <button class="rounded-button">Query</button> -->
+    
     <script>
- var dataString = '{{ data|safe }}';
-var data = JSON.parse(dataString);
+        var data = {{ data|tojson }};
+
 
 var resultList = document.getElementsByClassName('label-container')[0];
-for (var i = 0; i < data.length; i++) {
+data.forEach(function(document) {
     var paragraph = document.createElement('p');
-    paragraph.textContent = data[i];
+    paragraph.textContent = document;
     resultList.appendChild(paragraph);
-}
+});
 
-    </script>
-    
+</script> 
+
 </body>
 </html>

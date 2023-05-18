@@ -24,7 +24,7 @@ def get_data():
     data3 = [document for document in cursor3]
     return render_template('home.html', data1=data1, data2=data2, data3=data3)
 
-@app.route('/process_query', methods=['POST'])
+@app.route('/result', methods=['POST'])
 def process_query():
     try:
         collection_name = request.form['collection']
@@ -64,27 +64,12 @@ def process_query():
         return render_template('error.html')
 
 
-
-
-# ...
-
-# @app.route('/result')
-# def show_result():
-#     data = request.args.get('data')
-#     print(data)  # Add this line to check the value of data
-#     result_list = data.split(',') if data else []
-#     return render_template('result.html', data=result_list)
-
 @app.route('/result')
 def show_result():
     data = request.args.get('data')
+    print(data)  # Add this line to check the value of data
     result_list = data.split(',') if data else []
-    return render_template('result.html', data=json.dumps(data))
-
-
-
-
-# ...
+    return render_template('result.html', data=result_list)
 
 
 if __name__ == '__main__':
