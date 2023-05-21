@@ -122,28 +122,35 @@ experimental_col = db['Experimental']
 #     print('\n')
 
 
+# # Updating the records
+# result = experimental_col.update_many(
+#     {"crystallizationMethod": {"$regex": re.compile(r'^\s*$', re.IGNORECASE)}},
+#     {"$set": {"crystallizationMethod": "nan"}}
+# )
+
+# print(f"Number of documents matched: {result.matched_count}")
+# print(f"Number of documents updated: {result.modified_count}")
+
+# # Retrieve documents from the collection
+# documents = list(experimental_col.find())
+
+# # Define the fieldnames for the CSV file
+# fieldnames = ['_id', 'structureId', 'experimentalTechnique', 'resolution', 'crystallizationMethod', 'crystallizationTempK']
+
+# # Save documents to a CSV file
+# with open('/home/mariam/Downloads/Protein/data/experemintal.csv', 'w', newline='') as file:
+#     writer = csv.DictWriter(file, fieldnames=fieldnames)
+#     writer.writeheader()
+#     writer.writerows(documents)
+
+# print("Collection saved to experimental.csv successfully.")
 
 
+# # Delete the pdbxDetails field from all documents on Structure collection
+# structure_col.update_many({}, {"$unset": {"pdbxDetails": ""}})
 
-# Updating the records
-result = experimental_col.update_many(
-    {"crystallizationMethod": {"$regex": re.compile(r'^\s*$', re.IGNORECASE)}},
-    {"$set": {"crystallizationMethod": "nan"}}
-)
+# print("pdbxDetails field deleted from all documents in the structure collection.")
 
-print(f"Number of documents matched: {result.matched_count}")
-print(f"Number of documents updated: {result.modified_count}")
+# structure_deleted_df = pd.DataFrame(list(structure_col.find()))
+# structure_deleted_df.to_csv('data//structure_after_delete.csv', index=False)
 
-# Retrieve documents from the collection
-documents = list(experimental_col.find())
-
-# Define the fieldnames for the CSV file
-fieldnames = ['_id', 'structureId', 'experimentalTechnique', 'resolution', 'crystallizationMethod', 'crystallizationTempK']
-
-# Save documents to a CSV file
-with open('/home/mariam/Downloads/Protein/data/experemintal.csv', 'w', newline='') as file:
-    writer = csv.DictWriter(file, fieldnames=fieldnames)
-    writer.writeheader()
-    writer.writerows(documents)
-
-print("Collection saved to experimental.csv successfully.")
