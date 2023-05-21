@@ -49,7 +49,7 @@
       }
       .box-label {
         margin-bottom: 10px; /* Adjust the margin between label and box to your preference */
-        margin-right: 430px;
+        margin-right: 200px;
         font-size: 25px;
         color: #e07a5f;
         font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
@@ -59,7 +59,7 @@
       .form-container {
         position: absolute;
         top: 250px; /* Adjust the top position to your preference */
-        left: 30px; /* Adjust the left position to your preference */
+        left: 20px; /* Adjust the left position to your preference */
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -73,6 +73,7 @@
         color: #e07a5f;
         font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
           sans-serif;
+          
       }
       .form-item input,
       .form-item select {
@@ -87,6 +88,10 @@
         font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
           sans-serif;
       }
+      /* .inputs{
+        margin-left: 20px;
+
+      } */
       .submit-button {
         margin-top: 100px; /* Adjust the margin between form elements and the button to your preference */
         margin-left: 300px;
@@ -144,7 +149,7 @@
     <div class="form-container">
         <form action="{{ url_for('process_query') }}" method="GET">
         <div class="form-item">
-          <label for="dropdown1">Collection:</label>
+          <label for="dropdown1" class="inputs">Collection:</label>
           <select id="dropdown1" name="collection">
             <option value="Structure">Structure</option>
             <option value="Chain">Chain</option>
@@ -153,7 +158,7 @@
         </div>
 
         <div class="form-item">
-          <label for="dropdown2">Query Type:</label>
+          <label for="dropdown2" class="inputs">Query Type:</label>
           <select id="dropdown2" name="query_type">
             <option value="Insert">Insert</option>
             <option value="Find">Find</option>
@@ -165,7 +170,7 @@
         </div>
 
         <div class="form-item">
-          <label for="text-input">Query:</label>
+          <label for="text-input" class="inputs">Query:</label>
           <input type="text" id="text-input" name="query" />
         </div>
 

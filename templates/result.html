@@ -53,17 +53,54 @@
             color: #b97001;
         }
 
-        .label-container {
+        /* .label-container {
             text-align: left;
             color: #E07A5F;
             position: absolute;
-            top: 150px; /* Adjust the top position to your preference */
+            top: 150px; 
             left: 100px;
             right: 0;
             font-size: 30px;
             font-weight: bold;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        }
+        } */
+        .label-container {
+    /* width: 100%;
+    padding: 10px;
+    margin-bottom: 20px; */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 30px;
+    text-align: left;
+    position: absolute;
+            top: 250px; 
+            left: 30px;
+            right: 100;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #3D405B;
+  }
+
+  .label-container label {
+    font-weight: bold;
+  }
+
+  .label-container table {
+    width: 800px;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .label-container th,
+  .label-container td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #3D405B;
+  }
+
+  .label-container th {
+    background-color: #E07A5F;
+  }
 
         .rounded-button {
             background-color: #3D405B;
@@ -84,18 +121,39 @@
 </head>
 <body>
     <header>Protein Structure Database</header>
-    <div class="label-container">
+    <!-- <div class="label-container">
         <label>Query Result:</label>
         {% for document in data %}
         <p>{{ document }}</p>
         {% endfor %}
-    </div>
+    </div> -->
+    <div class="label-container">
+        <label>Query Result:</label>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for document in data %}
+            <tr>
+              <td>{{ document }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
     <form action="/process_query" method="POST">
         <div class="container">
             <img src="{{ url_for('static', filename='result.png') }}" alt="Your Image">
         </div>
-        
-    
+    </form>
+        <form action="/data" method="GET"> <!-- Update the action attribute to the desired URL -->
+            <!-- Form content -->
+            <button class="rounded-button" type="submit">Query</button>
+        </form>
     <script>
         var data = {{ data|tojson }};
         var resultList = document.getElementsByClassName('label-container')[0];
