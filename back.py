@@ -40,33 +40,10 @@ def process_query():
         else:
             return render_template('result.html', query_type=query_type, query=query, data=[])
         if query_type == 'find':
-            conditions = [query]
-            sub_condition = {}  # Initialize sub_condition variable
-            for sub_query in conditions:
-                field = sub_query.get('field')
-                value = sub_query.get('value')
-                operator = sub_query.get('operator')
-
-                if operator == 'equal':
-                    sub_condition = {field: {'$eq': value}}
-                elif operator == 'greater_than':
-                    sub_condition = {field: {'$gt': value}}
-                elif operator == 'greater_than_or_equal':
-                    sub_condition = {field: {'$gte': value}}
-                elif operator == 'less_than':
-                    sub_condition = {field: {'$lt': value}}
-                elif operator == 'less_than_or_equal':
-                    sub_condition = {field: {'$lte': value}}
-                elif operator == 'and':
-                    sub_condition = {'$and': value}
-                elif operator == 'or':
-                    sub_condition = {'$or': value}
-
-                conditions.append(sub_condition)
-
-            query = {"$and": conditions}  # Use "$and" operator for combining conditions
-            results = collection.find(query)
-            data = '\n'.join([str(r) for r in results])
+            query_criteria = query.get('query', {})  # Get the query criteria
+            projection = query.get('projection', {})  # Get the projection criteria
+            result = collection.find(query_criteria, projection)
+            data = [doc for doc in result]
         elif query_type == 'insert':
             result = collection.insert_one(query)
             data = [{'inserted_id': str(result.inserted_id)}]
