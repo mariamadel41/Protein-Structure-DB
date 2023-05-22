@@ -96,28 +96,58 @@ experimental_col = db['Experimental']
 
 # #Find Query:
 # cursor = structure_col.find({"classification": "DNA-RNA HYBRID"})
+#print("Find all documents in Structure collection where classidfication is \"DNA-RNA HYBRID" :" ,'\n')
 # for document in cursor:
 #     pprint(document)
 #     print('\n')
 
 # cursor2 = chain_col.find({"chainId": "H"})
+#print("Find all documents in Chain collection where chainId is \"H" : ",  '\n')
 # for document in cursor2:
 #     pprint(document)
 #     print('\n')
 
 
 # cursor3 = experimental_col.find({"resolution": {"$gt" : 2.0}})
+#print("Find all documents in Experimental collection where resolution is greater than 2 :" , '\n')
 # for document in cursor3:
 #     pprint(document)
 #     print('\n')
 
 # cursor4 = structure_col.find({"residueCount": {"$gte" : 300}})
+#print("Find all documents in Structure collection where residueCount is greater than or equal 300 : " ,'\n')
 # for document in cursor4:
 #     pprint(document)
 #     print('\n')
 
 # cursor5 = structure_col.find({"$and" : [ {"macromoleculeType" : "DNA"} , {"residueCount": {"$lt" : 50}}]})
+#print("Find all documents in Structure collection where macromoleculeType is \"DNA" and residueCount is less than  or equal 50 :" , '\n')
 # for document in cursor5:
+#     pprint(document)
+#     print('\n')
+
+# cursor6 = structure_col.find({"publicationYear": {"$gte" : 2001}})
+# print("Find all documents in Structure collection where residueCount is greater than or equal 300 : " , '\n')
+# for document in cursor6:
+#     pprint(document)
+#     print('\n')
+
+#Mongodb Projection (inclusion and exclusion) 
+# cursor7 = structure_col.find(
+#     {"publicationYear": {"$gte": 2005}} ,
+#      {"structureId": 0, "densityPercentSol": 0} 
+# )
+# print("Find all documents in Structure collection where publicationYear is greater than or equal 2005 without display structureId and densityPercentSol: ", '\n')
+# for document in cursor7:
+#     pprint(document)
+#     print('\n')
+
+# cursor8 = experimental_col.find(
+#     {"resolution": {"$gt": 2.3}} ,
+#      {"experimentalTechnique": 1,"_id" : 0 } 
+# )
+# print("Find all documents in expiremental collection where resolution is greater 2.3 just display experimentalTechnique: ", '\n')
+# for document in cursor8:
 #     pprint(document)
 #     print('\n')
 
@@ -130,19 +160,15 @@ experimental_col = db['Experimental']
 
 # print(f"Number of documents matched: {result.matched_count}")
 # print(f"Number of documents updated: {result.modified_count}")
-
 # # Retrieve documents from the collection
 # documents = list(experimental_col.find())
-
 # # Define the fieldnames for the CSV file
 # fieldnames = ['_id', 'structureId', 'experimentalTechnique', 'resolution', 'crystallizationMethod', 'crystallizationTempK']
-
 # # Save documents to a CSV file
 # with open('/home/mariam/Downloads/Protein/data/experemintal.csv', 'w', newline='') as file:
 #     writer = csv.DictWriter(file, fieldnames=fieldnames)
 #     writer.writeheader()
 #     writer.writerows(documents)
-
 # print("Collection saved to experimental.csv successfully.")
 
 
@@ -152,25 +178,81 @@ experimental_col = db['Experimental']
 # structure_deleted_df = pd.DataFrame(list(structure_col.find()))
 # structure_deleted_df.to_csv('data//structure_after_delete.csv', index=False)
 
+
 #Aggregation Queries
 
-#distinct:
-d = structure_col.distinct("classification")
-print("Classification Types:\n")
-count1=0
-for i in d:
-    pprint(i)
-    count1 +=1
-print('\n')
-print("There are", count1, "classes.\n")
+# #distinct:
+# d = structure_col.distinct("classification")
+# print("Classification Types:\n")
+# count1=0
+# for i in d:
+#     pprint(i)
+#     count1 +=1
+# print('\n')
+# print("There are", count1, "classes.\n")
 
 
-d2 = experimental_col.distinct("experimentalTechnique")
-print("ExperimentalTechnique Types:\n")
-count2 =0 
-for i in d2:
-    pprint(i)
-    count2 +=1
-print('\n')
-print("There are", count2, "ExperimentalTechniques.\n")
+# d2 = experimental_col.distinct("experimentalTechnique")
+# print("ExperimentalTechnique Types:\n")
+# count2 =0 
+# for i in d2:
+#     pprint(i)
+#     count2 +=1
+# print('\n')
+# print("There are", count2, "ExperimentalTechniques.\n")
+
+# d3 = experimental_col.distinct("crystallizationMethod")
+# print("crystallizationMethod Types:\n")
+# count3 =0 
+# for i in d3:
+#     pprint(i)
+#     count3 +=1
+# print('\n')
+# print("There are", count3, "crystallizationMethod.\n")
+
+# d4 = structure_col.distinct("macromoleculeType")
+# print("MacromoleculeType :\n")
+# count4 =0 
+# for i in d4:
+#     pprint(i)
+#     count4 +=1
+# print('\n')
+# print("There are", count4, "macromoleculeTypes.\n")
+
+
+# #Reference relation:
+# document = structure_col.find_one({"_id": 3})
+# print ("The Chain document detail with Structure document id equal 3 : " )
+# if document:
+#     chain_id = document["chainId"]
+
+#     # Use the chainId to find matching documents in the chain collection
+#     address_documents = chain_col.find({"_id": {"$in": chain_id}})
+#     for doc in address_documents:
+#         pprint(doc)
+# else:
+#     print("No document found with structure _id equal to 3")
+
+# document2 = structure_col.find_one({"classification": "HYDROLASE(O-GLYCOSYL)"})
+# print ("The Chain document detail with Structure document classification is HYDROLASE(O-GLYCOSYL) : " )
+# if document2:
+#     chain_id = document2["chainId"]
+#     address_documents2 = chain_col.find({"_id": {"$in": chain_id}})
+#     for doc in address_documents2:
+#         pprint(doc)
+# else:
+#     print("No document found with this chainId!")
+
+# document3 = structure_col.find_one({"structureMolecularWeight": 18030.63 })
+# print ("The Chain document detail with Structure document classification is 18030.63 : " )
+# if document3:
+#     chain_id = document3["chainId"]
+#     address_documents3 = chain_col.find({"_id": {"$in": chain_id}})
+#     for doc in address_documents3:
+#         pprint(doc)
+# else:
+#     print("No document found with this chainId!")
+
+
+
 
