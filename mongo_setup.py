@@ -1,9 +1,11 @@
+import pymongo
 import pandas as pd
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from pprint import pprint
 import csv
 import re
+from bson.code import Code
 # # shrink csv files to 5000 records:
 # dups_df = pd.read_csv('data//dups.csv').head(5000)
 # seq_df = pd.read_csv('data//seq.csv').head(12000)
@@ -78,7 +80,7 @@ experimental_col = db['Experimental']
 # # Iterate over the Chain collection and add the chainId to the corresponding Structure documents
 # count = 0
 # for chain in db.Chain.find():
-#     db.Structure.update_one({"structureId": chain["structureId"]}, {"$push": {"chainId": chain["_id"]}})
+#     db.Structure.update_one({"structureId": chain["structufrom pymongo import ConnectionreId"]}, {"$push": {"chainId": chain["_id"]}})
 #     count += 1
 #     print(f"Iteration {count} completed")
 
@@ -219,7 +221,49 @@ experimental_col = db['Experimental']
 # print('\n')
 # print("There are", count4, "macromoleculeTypes.\n")
 
+# d5 = structure_col.aggregate( [{"$match" :{"macromoleculeType":"Protein#DNA"} }]) 
+# print ("Find The Structure document with macromoleculeType is Protein#DNA : " )
+# for i in d5:
+#     pprint(i)   
+# print('\n') 
 
+# d6 = structure_col.aggregate( [{"$match" :{"macromoleculeType":"DNA#DNA/RNA Hybrid"} } ,{"$sort":{"publicationYear":1}}]) 
+# print ("Find The Structure document with macromoleculeType is DNA#DNA/RNA Hybrid sorted ascending with piblication year : " )
+# for i in d6:
+#     pprint(i)   
+# print('\n')
+
+
+# d7 = experimental_col.aggregate( [{"$match" :{"crystallizationMethod":"VAPOR DIFFUSION"} } ,{"$sort":{"resolution":-1 , "_id" : 1}}]) 
+# print ("Find The Experimental document with crystallizationMethod is VAPOR DIFFUSION sorted decending with resolution and _id ascending for uniqeness : " )
+# for i in d7:
+#     pprint(i)   
+# print('\n')
+
+# d7 = structure_col.aggregate([
+#     {"$match": {"macromoleculeType": "Protein"}},
+#     {"$group": {"_id": "$classification", "AvgpH": {"$avg": "$phValue"}}},
+#     {"$sort": {"AvgGpa": 1, "_id": 1}}
+# ])
+
+# print("Find the average of phValue for the protein macromoleculeType : ")
+# for i in d7:
+#     pprint(i)
+# print('\n')
+
+
+# d8 = structure_col.aggregate([
+#     {"$match": {"macromoleculeType": "Protein"}},
+#     {"$group": {"_id": "$classification", "AvgpH": {"$avg": "$residueCount"}}},
+#     {"$sort": {"AvgGpa": 1, "_id": 1}}
+# ])
+
+# print("Find the average of residueCount for the protein macromoleculeType : ")
+# for i in d8:
+#     pprint(i)
+# print('\n')
+
+ 
 # #Reference relation:
 # document = structure_col.find_one({"_id": 3})
 # print ("The Chain document detail with Structure document id equal 3 : " )
@@ -254,5 +298,20 @@ experimental_col = db['Experimental']
 #     print("No document found with this chainId!")
 
 
+#indexing:
+# print("Display Structure collection according to residueCount index descending: ")
+# ind1 = structure_col.create_index([("residueCount", pymongo.DESCENDING)])
+
+# for doc in structure_col.find().hint(ind1):
+#     pprint(doc)
 
 
+# print("Display Structure collection according to publication year  index ascending: ")
+# ind2 = structure_col.create_index([("publicationYear", pymongo.ASCENDING),("residueCount" , pymongo.DESCENDING)])
+# for doc in structure_col.find().hint(ind2):
+#     pprint(doc)
+
+# print("Display experimental collection according to resolution year  index descending: ")
+# ind3 = experimental_col.create_index([("resolution", pymongo.DESCENDING)])
+# for doc in experimental_col.find().hint(ind3):
+#     pprint(doc)
