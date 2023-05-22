@@ -41,15 +41,16 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 50%;
+            width: 500;
             height: 350px; /* Adjust the height of the output box */
+          
             padding: 10px; /* Add padding inside the output box */
             overflow: auto; /* Add scrollbars if the content exceeds the box dimensions */
             font-family: Arial, sans-serif; /* Specify the font family */
             font-size: 26px; /* Adjust the font size */
-            margin-top: 200px;
-            margin-left: 100px;
-            background-color: #F4F1DE;
+            margin-top: 70px;
+            /* margin-left: 0px; */
+            background-color:#F4F1DE ;
             color: #b97001;
         }
 
@@ -121,13 +122,19 @@
 </head>
 <body>
     <header>Protein Structure Database</header>
-    <!-- <div class="label-container">
-        <label>Query Result:</label>
-        {% for document in data %}
-        <p>{{ document }}</p>
-        {% endfor %}
-    </div> -->
     <div class="label-container">
+        <label>Query Result:</label>
+        <div class="scroll-box">
+          {% for document in data %}
+          <div class="document">
+            {% for key, value in document.items() %}
+            <p><strong>{{ key }}:</strong> {{ value }}</p>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+    </div>
+    <!-- <div class="label-container">
         <label>Query Result:</label>
         <table>
           <thead>
@@ -143,7 +150,7 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
+      </div> -->
       
     <form action="/process_query" method="POST">
         <div class="container">

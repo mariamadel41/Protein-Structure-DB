@@ -1,0 +1,57 @@
+structure insert:
+
+{"_id": 5001, "structureId": "100z" , "classification": "DNA-RNA HYBRID" , "macromoleculeType": "DNA/RNA Hybrid" , "residueCount": "20" , "structureMolecularWeight": "6350.3"  ,"densityMatthews": "1.78", "densityPercentSol": "30.89","phValue": "6.0", "publicationYear": "1995.0",  "chainId": "[9778]"}
+
+
+
+
+update:
+
+{
+  "filter": {"field1": "value1"},
+  "update": {"$set": {"field2": "new_value"}}
+}
+
+update on chain:
+{   "filter": {"chainId": "B"},   "update": {"$set": {"sequence": "CCGGCGCCGGMA"}} }
+
+
+
+
+delete:
+{"field" : "value"}
+
+delete on experimental:
+{"structureId" : "100D" } 
+
+
+
+
+Aggregate:
+[
+  {"$match": {"field1": "value1"}},
+  {"$group": {"_id": "$field2", "count": {"$sum": 1}}}
+]
+
+
+[   {"$match": {"macromoleculeType": "Protein"}},   {"$group": {"_id": "$classification", "count": {"$sum": 1}}} ]
+
+[{"$match" :{"crystallizationMethod":"VAPOR DIFFUSION"} } ,{"$sort":{"resolution":-1 , "_id" : 1}}]
+
+
+
+
+
+
+index:
+{
+  "index_fields": "field_name",
+  "index_order": "pymongo.ASCENDING"
+}
+
+
+{"index_fields":"resolution","index_order": 1}
+
+{"index_fields":"structureMolecularWeight","index_order": -1}
+
+
