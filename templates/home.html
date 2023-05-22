@@ -109,6 +109,20 @@
         font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
           sans-serif;
       }
+      textarea{
+
+        position: absolute;
+        top: 510px;
+        left: 20px;
+        height: 250px;
+        width: 600px;
+        margin-bottom:100px;
+        border: 5px inset #F2CC8F;
+        border-radius: 5px;
+        background-color: #F2CC8F;
+        font-size: 20px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
 
     </style>
   </head>
@@ -178,6 +192,38 @@
         <div class="submit-button">
           <button type="submit">Submit</button>
         </div>
+        <textarea>
+          Query Format
+  
+    —>Find
+    {"field" : "value"}
+    {"$and" : [ {"field1" : "value1"} , {"field2": {"$lt" : value2}}]}
+    {"query": {"field1":{"$gt": value}},"projection": {"field1":operator(1 or 0),"field2": operator(1 or 0)}}
+    
+    
+    —> Update
+    {
+      "filter": {"field1": "value1"},
+      "update": {"$set": {"field2": "new_value"}}
+    }
+    
+    —>Delete
+    {"field" : "value"}
+    
+    —>Aggregate
+    [
+      {"$match": {"field1": "value1"}},
+      {"$group": {"_id": "$field2", "count": {"$sum": 1}}}
+    ]
+    
+    
+    —>Index
+    {
+      "index_fields": "field_name",
+      "index_order": "pymongo.ASCENDING"
+    }
+          </textarea>
+
       </form>
     </div>
   </body>
