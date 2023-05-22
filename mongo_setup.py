@@ -148,9 +148,29 @@ experimental_col = db['Experimental']
 
 # # Delete the pdbxDetails field from all documents on Structure collection
 # structure_col.update_many({}, {"$unset": {"pdbxDetails": ""}})
-
 # print("pdbxDetails field deleted from all documents in the structure collection.")
-
 # structure_deleted_df = pd.DataFrame(list(structure_col.find()))
 # structure_deleted_df.to_csv('data//structure_after_delete.csv', index=False)
+
+#Aggregation Queries
+
+#distinct:
+d = structure_col.distinct("classification")
+print("Classification Types:\n")
+count1=0
+for i in d:
+    pprint(i)
+    count1 +=1
+print('\n')
+print("There are", count1, "classes.\n")
+
+
+d2 = experimental_col.distinct("experimentalTechnique")
+print("ExperimentalTechnique Types:\n")
+count2 =0 
+for i in d2:
+    pprint(i)
+    count2 +=1
+print('\n')
+print("There are", count2, "ExperimentalTechniques.\n")
 
